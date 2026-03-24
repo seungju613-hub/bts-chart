@@ -114,13 +114,16 @@ def crawl_genie_chart(chart_type="TOP200"):
                 "title": entry.title,
                 "artist": entry.artist,
             })
+        # 디버깅: 상위 5곡 출력
+        log(f"  지니 수집된 곡 수: {len(rows)}")
+        for r in rows[:5]:
+            log(f"    #{r['rank']} {r['title']} - {r['artist']}")
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
         log(f"  지니 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
         return rank
-    except Exception:
-        pass
+    except Exception as e:
+        log(f"  지니 라이브러리 실패: {e}, 직접 스크래핑 시도...")
 
-    # 라이브러리 실패 시 직접 스크래핑 폴백
     urls = {
         "TOP200": "https://www.genie.co.kr/chart/top200",
         "일간": "https://www.genie.co.kr/chart/top200?ditc=D",
@@ -132,7 +135,6 @@ def crawl_genie_chart(chart_type="TOP200"):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
         rows = []
-        # 여러 가지 셀렉터 시도
         for tr in soup.select("tr.list, tr[class*='list']"):
             rank_el = tr.select_one(".number, .num, [class*='rank'], [class*='number']")
             title_el = tr.select_one(".title .ellipsis, .info .title a, [class*='title'] a, .title a")
@@ -148,6 +150,10 @@ def crawl_genie_chart(chart_type="TOP200"):
                     "title": title_el.get_text(strip=True),
                     "artist": artist_el.get_text(strip=True) if artist_el else "",
                 })
+        # 디버깅: 상위 5곡 출력
+        log(f"  지니(폴백) 수집된 곡 수: {len(rows)}")
+        for r in rows[:5]:
+            log(f"    #{r['rank']} {r['title']} - {r['artist']}")
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
         log(f"  지니 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
         return rank
