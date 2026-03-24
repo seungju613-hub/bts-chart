@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25 00:46",
+  "lastUpdated": "2026-03-25 01:13",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,8 +13,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 1,
-              "change": 0
+              "rank": 2,
+              "change": -1
             },
             "HOT100": {
               "rank": 1,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 1,
-              "change": 0
+              "rank": 16,
+              "change": -15
             },
             "일간": {
-              "rank": 1,
-              "change": 0
+              "rank": 16,
+              "change": -15
             }
           },
           "chartMeta": {
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 3,
-              "change": 0
+              "rank": 5,
+              "change": -2
             },
             "일간": {
               "rank": 1,
@@ -173,8 +173,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 2,
-              "change": 0
+              "rank": 5,
+              "change": -3
             },
             "HOT100": {
               "rank": 2,
@@ -203,12 +203,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 18,
-              "change": 0
+              "rank": 17,
+              "change": 1
             },
             "일간": {
-              "rank": 18,
-              "change": 0
+              "rank": 17,
+              "change": 1
             }
           },
           "chartMeta": {
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 6,
-              "change": 0
+              "rank": 7,
+              "change": -1
             },
             "일간": {
               "rank": 5,
