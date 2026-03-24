@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24 17:56",
+  "lastUpdated": "2026-03-24 18:23",
   "song": "Swim",
   "artist": "BTS (방탄소년단)",
   "domestic": {
@@ -52,20 +52,10 @@
         "TOP200": {
           "rank": "-",
           "change": "-"
-        },
-        "일간": {
-          "rank": "-",
-          "change": "-"
-        },
-        "주간": {
-          "rank": "-",
-          "change": "-"
         }
       },
       "chartMeta": {
-        "TOP200": "실시간 종합 (매시 갱신)",
-        "일간": "일간 종합 차트",
-        "주간": "주간 종합 차트"
+        "TOP200": "실시간 종합 (매시 갱신)"
       }
     },
     "bugs": {
@@ -75,22 +65,12 @@
       "representative": "실시간",
       "charts": {
         "실시간": {
-          "rank": 3,
-          "change": "NEW"
-        },
-        "일간": {
-          "rank": 3,
-          "change": "NEW"
-        },
-        "주간": {
-          "rank": 3,
-          "change": "NEW"
+          "rank": 2,
+          "change": 1
         }
       },
       "chartMeta": {
-        "실시간": "실시간 인기 차트 (매시 갱신)",
-        "일간": "일간 종합 차트",
-        "주간": "주간 종합 차트"
+        "실시간": "실시간 인기 차트 (매시 갱신)"
       }
     },
     "flo": {
@@ -102,15 +82,10 @@
         "실시간": {
           "rank": 1,
           "change": 0
-        },
-        "일간": {
-          "rank": 1,
-          "change": 0
         }
       },
       "chartMeta": {
-        "실시간": "실시간 차트 (매시 갱신)",
-        "일간": "일간 종합 차트"
+        "실시간": "실시간 차트 (매시 갱신)"
       }
     },
     "vibe": {
@@ -122,44 +97,14 @@
         "TOP100": {
           "rank": 3,
           "change": 0
-        },
-        "급상승": {
-          "rank": 3,
-          "change": 0
         }
       },
       "chartMeta": {
-        "TOP100": "국내 인기 종합 차트",
-        "급상승": "국내 급상승 차트"
+        "TOP100": "국내 인기 종합 차트"
       }
     }
   },
   "global": {
-    "spotify": {
-      "name": "Spotify",
-      "letter": "S",
-      "bgClass": "bg-spotify",
-      "representative": "Korea Top 50",
-      "charts": {
-        "Korea Top 50": {
-          "rank": "-",
-          "change": "-"
-        },
-        "Global Top 50": {
-          "rank": "-",
-          "change": "-"
-        },
-        "Global Viral 50": {
-          "rank": "-",
-          "change": "-"
-        }
-      },
-      "chartMeta": {
-        "Korea Top 50": "한국 지역 인기 50곡",
-        "Global Top 50": "전 세계 인기 50곡",
-        "Global Viral 50": "전 세계 바이럴 50곡"
-      }
-    },
     "apple": {
       "name": "Apple Music",
       "letter": "♫",
@@ -180,29 +125,36 @@
         "Global Top 100": "전 세계 인기 100곡"
       }
     },
-    "youtube": {
-      "name": "YouTube Music",
-      "letter": "Y",
-      "bgClass": "bg-youtube",
-      "representative": "Korea Top 100",
+    "spotify": {
+      "name": "Spotify",
+      "letter": "S",
+      "bgClass": "bg-spotify",
+      "representative": "Korea Top 50",
+      "coming_soon": true,
       "charts": {
-        "Korea Top 100": {
-          "rank": "-",
-          "change": "-"
-        },
-        "Global Top 100": {
-          "rank": "-",
-          "change": "-"
-        },
-        "Trending": {
+        "Korea Top 50": {
           "rank": "-",
           "change": "-"
         }
       },
       "chartMeta": {
-        "Korea Top 100": "한국 인기 100곡",
-        "Global Top 100": "전 세계 인기 100곡",
-        "Trending": "급상승 인기곡"
+        "Korea Top 50": "연동 준비 중"
+      }
+    },
+    "youtube": {
+      "name": "YouTube Music",
+      "letter": "Y",
+      "bgClass": "bg-youtube",
+      "representative": "Korea Top 100",
+      "coming_soon": true,
+      "charts": {
+        "Korea Top 100": {
+          "rank": "-",
+          "change": "-"
+        }
+      },
+      "chartMeta": {
+        "Korea Top 100": "연동 준비 중"
       }
     }
   }
