@@ -111,22 +111,23 @@ def crawl_genie_chart(chart_type="TOP200"):
     }
     url = urls.get(chart_type, urls["TOP200"])
     try:
+        import re
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
         rows = []
-        songs = soup.select("#body-content > div.newest-list > div > table > tbody > tr")
-        if not songs:
-            songs = soup.select("tr.list")
+        songs = soup.select("table tbody tr")
         for song in songs:
             rank_el = song.select_one("td.number, .number")
-            title_el = song.select_one("a.title.ellipsis") or song.select_one("td.info a.title")
-            artist_el = song.select_one("a.artist.ellipsis") or song.select_one("td.info a.artist")
+            title_el = song.select_one("a.title.ellipsis, a.title, td.info a.title, [class*='title'] a")
+            artist_el = song.select_one("a.artist.ellipsis, a.artist, td.info a.artist, [class*='artist'] a")
             if rank_el and title_el:
-                rank_text = rank_el.get_text(strip=True)[:4].strip()
-                try:
-                    rank_num = int(rank_text)
-                except ValueError:
+                rank_text = rank_el.get_text()
+                match = re.search(r'(\d+)', rank_text)
+                if not match:
+                    continue
+                rank_num = int(match.group(1))
+                if rank_num > 200:
                     continue
                 rows.append({
                     "rank": rank_num,
