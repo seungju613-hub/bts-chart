@@ -117,87 +117,45 @@ def crawl_melon_chart(chart_type="TOP100"):
 #  지니 크롤링
 # ══════════════════════════════════════════════
 
-def crawl_genie_chart(chart_type="TOP200"):
-    """지니 차트 크롤링"""
-    urls = {
-        "TOP200": "https://www.genie.co.kr/chart/top200",
-        "일간": "https://www.genie.co.kr/chart/top200?ditc=D",
-        "주간": "https://www.genie.co.kr/chart/top200?ditc=W",
-    }
-    url = urls.get(chart_type, urls["TOP200"])
-    
+def crawl_bugs_chart(chart_type="실시간"):
+    """벅스 차트 크롤링 (bugs-chart.py 라이브러리 활용)"""
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
-        resp.raise_for_status()
-        
-        soup = BeautifulSoup(resp.text, "html.parser")
+        from bugs import ChartData as BugsChartData
+        chart = BugsChartData()
         rows = []
-        
-        for tr in soup.select("tr.list"):
-            rank_el = tr.select_one(".number")
-            title_el = tr.select_one(".title .ellipsis") or tr.select_one(".info .title")
-            artist_el = tr.select_one(".artist .ellipsis") or tr.select_one(".info .artist")
-            
-            if rank_el and title_el:
-                rank_text = rank_el.get_text(strip=True).split("\n")[0].strip()
-                try:
-                    rank_num = int(rank_text)
-                except ValueError:
-                    continue
-                
-                rows.append({
-                    "rank": rank_num,
-                    "title": title_el.get_text(strip=True),
-                    "artist": artist_el.get_text(strip=True) if artist_el else "",
-                })
+        for entry in chart:
+            rows.append({
+                "rank": entry.rank,
+                "title": entry.title,
+                "artist": entry.artist,
+            })
         
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  지니 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
+        log(f"  벅스 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
         return rank
         
     except Exception as e:
-        err_msg = f"지니 {chart_type} 크롤링 실패: {str(e)}"
+        err_msg = f"벅스 {chart_type} 크롤링 실패: {str(e)}"
         log(f"  ❌ {err_msg}")
         errors.append(err_msg)
         return None
-
 
 # ══════════════════════════════════════════════
 #  벅스 크롤링
 # ══════════════════════════════════════════════
 
 def crawl_bugs_chart(chart_type="실시간"):
-    """벅스 차트 크롤링"""
-    urls = {
-        "실시간": "https://music.bugs.co.kr/chart",
-        "일간": "https://music.bugs.co.kr/chart/track/day/total",
-        "주간": "https://music.bugs.co.kr/chart/track/week/total",
-    }
-    url = urls.get(chart_type, urls["실시간"])
-    
+    """벅스 차트 크롤링 (bugs-chart.py 라이브러리 활용)"""
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
-        resp.raise_for_status()
-        
-        soup = BeautifulSoup(resp.text, "html.parser")
+        from bugs import ChartData as BugsChartData
+        chart = BugsChartData()
         rows = []
-        
-        for tr in soup.select("table.list tr.trackList"):
-            rank_el = tr.select_one(".ranking strong")
-            title_el = tr.select_one(".title a") or tr.select_one("p.title a")
-            artist_el = tr.select_one(".artist a")
-            
-            if rank_el and title_el:
-                try:
-                    rank_num = int(rank_el.get_text(strip=True))
-                except ValueError:
-                    continue
-                
-                rows.append({
-                    "rank": rank_num,
-                    "title": title_el.get_text(strip=True),
-                    "artist": artist_el.get_text(strip=True) if artist_el else "",
-                })
+        for entry in chart:
+            rows.append({
+                "rank": entry.rank,
+                "title": entry.title,
+                "artist": entry.artist,
+            })
         
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
         log(f"  벅스 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
