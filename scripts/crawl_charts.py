@@ -1,76 +1,68 @@
 """
-BTS "Swim" 차트 크롤러
+BTS "ARIRANG" 차트 크롤러 — 다중 곡 트래킹
+- 트래킹 곡: Swim, Body to Body
 - 국내: 멜론, 지니, 벅스, 플로, 바이브
-- 글로벌: Apple Music (Spotify/YouTube는 연동 준비 중)
+- 글로벌: Apple Music (Spotify/YouTube 연동 준비 중)
 - 1시간마다 GitHub Actions에서 자동 실행됩니다.
 """
 
 import requests
 from bs4 import BeautifulSoup
-import json
-import os
-import sys
+import json, os, sys, re
 from datetime import datetime, timezone, timedelta
 
 KST = timezone(timedelta(hours=9))
 
 # ══════════════════════════════════════════════
-#  설정: 트래킹할 곡 정보
+#  설정: 트래킹할 곡 정보 (여러 곡 가능)
 # ══════════════════════════════════════════════
-TRACK_TITLE = "Swim"
-TRACK_ARTIST_KEYWORDS = ["BTS", "방탄소년단"]
+TRACKS = [
+    {"title": "Swim",         "emoji": "🌊"},
+    {"title": "Body to Body", "emoji": "💃"},
+]
+ARTIST_KEYWORDS = ["BTS", "방탄소년단"]
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
 }
-
 errors = []
-
 
 def log(msg):
     print(f"[{datetime.now(KST).strftime('%H:%M:%S')}] {msg}")
 
-
-def find_rank(rows, title_key, artist_key):
-    title_lower = TRACK_TITLE.lower()
+def find_rank_in_rows(rows, title, artist_keywords):
+    title_lower = title.lower()
     for row in rows:
         t = row.get("title", "").strip().lower()
         a = row.get("artist", "").strip()
         if title_lower in t:
-            for kw in TRACK_ARTIST_KEYWORDS:
+            for kw in artist_keywords:
                 if kw.lower() in a.lower():
                     return row["rank"]
     return None
 
-
 def calc_change(current_rank, prev_rank):
     if current_rank is None:
         return "-"
-    if prev_rank is None or prev_rank == "-":
+    if prev_rank is None or prev_rank == "-" or isinstance(prev_rank, str):
         return "NEW"
-    if isinstance(prev_rank, str):
-        return "NEW"
-    diff = prev_rank - current_rank
-    return diff
+    return prev_rank - current_rank
 
 
 # ══════════════════════════════════════════════
-#  멜론 크롤링
+#  각 플랫폼 크롤링 — rows 리스트 반환
 # ══════════════════════════════════════════════
 
-def crawl_melon_chart(chart_type="TOP100"):
-    urls = {
-        "TOP100": "https://www.melon.com/chart/index.htm",
-        "HOT100": "https://www.melon.com/chart/hot100/index.htm",
-        "일간": "https://www.melon.com/chart/day/index.htm",
-        "주간": "https://www.melon.com/chart/week/index.htm",
-    }
+def crawl_melon(chart_type="TOP100"):
+    urls = {"TOP100": "https://www.melon.com/chart/index.htm",
+            "HOT100": "https://www.melon.com/chart/hot100/index.htm",
+            "일간": "https://www.melon.com/chart/day/index.htm",
+            "주간": "https://www.melon.com/chart/week/index.htm"}
     url = urls.get(chart_type, urls["TOP100"])
     try:
-        headers = {**HEADERS, "Referer": "https://www.melon.com/"}
-        resp = requests.get(url, headers=headers, timeout=15)
+        resp = requests.get(url, headers={**HEADERS, "Referer": "https://www.melon.com/"}, timeout=15)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
         rows = []
@@ -79,183 +71,89 @@ def crawl_melon_chart(chart_type="TOP100"):
             title_el = tr.select_one(".ellipsis.rank01 a") or tr.select_one(".rank01 a")
             artist_el = tr.select_one(".ellipsis.rank02 a") or tr.select_one(".rank02 a")
             if rank_el and title_el:
-                rank_text = rank_el.get_text(strip=True)
-                try:
-                    rank_num = int(rank_text)
-                except ValueError:
-                    rank_num = i
-                rows.append({
-                    "rank": rank_num,
-                    "title": title_el.get_text(strip=True),
-                    "artist": artist_el.get_text(strip=True) if artist_el else "",
-                })
-        rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  멜론 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
-        return rank
+                try: rank_num = int(rank_el.get_text(strip=True))
+                except ValueError: rank_num = i
+                rows.append({"rank": rank_num, "title": title_el.get_text(strip=True),
+                             "artist": artist_el.get_text(strip=True) if artist_el else ""})
+        return rows
     except Exception as e:
-        err_msg = f"멜론 {chart_type} 크롤링 실패: {str(e)}"
-        log(f"  ❌ {err_msg}")
-        errors.append(err_msg)
-        return None
+        errors.append(f"멜론 {chart_type} 크롤링 실패: {e}")
+        log(f"  ❌ 멜론 {chart_type} 실패: {e}")
+        return []
 
-
-# ══════════════════════════════════════════════
-#  지니 크롤링 (직접 스크래핑)
-# ══════════════════════════════════════════════
-
-def crawl_genie_chart(chart_type="TOP200"):
-    urls = {
-        "TOP200": "https://www.genie.co.kr/chart/top200",
-        "일간": "https://www.genie.co.kr/chart/top200?ditc=D",
-        "주간": "https://www.genie.co.kr/chart/top200?ditc=W",
-    }
+def crawl_genie(chart_type="TOP200"):
+    urls = {"TOP200": "https://www.genie.co.kr/chart/top200"}
     url = urls.get(chart_type, urls["TOP200"])
     try:
-        import re
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
         rows = []
-        songs = soup.select("table tbody tr")
-        for song in songs:
+        for song in soup.select("table tbody tr"):
             rank_el = song.select_one("td.number, .number")
             title_el = song.select_one("a.title.ellipsis, a.title, td.info a.title, [class*='title'] a")
             artist_el = song.select_one("a.artist.ellipsis, a.artist, td.info a.artist, [class*='artist'] a")
             if rank_el and title_el:
-                rank_text = rank_el.get_text()
-                match = re.search(r'(\d+)', rank_text)
-                if not match:
-                    continue
+                match = re.search(r'(\d+)', rank_el.get_text())
+                if not match: continue
                 rank_num = int(match.group(1))
-                if rank_num > 200:
-                    continue
-                rows.append({
-                    "rank": rank_num,
-                    "title": title_el.get_text(strip=True),
-                    "artist": artist_el.get_text(strip=True) if artist_el else "",
-                })
-        log(f"  지니 수집된 곡 수: {len(rows)}")
-        for r in rows[:3]:
-            log(f"    #{r['rank']} {r['title']} - {r['artist']}")
-        rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  지니 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
-        return rank
+                if rank_num > 200: continue
+                rows.append({"rank": rank_num, "title": title_el.get_text(strip=True),
+                             "artist": artist_el.get_text(strip=True) if artist_el else ""})
+        return rows
     except Exception as e:
-        err_msg = f"지니 {chart_type} 크롤링 실패: {str(e)}"
-        log(f"  ❌ {err_msg}")
-        errors.append(err_msg)
-        return None
+        errors.append(f"지니 {chart_type} 크롤링 실패: {e}")
+        log(f"  ❌ 지니 {chart_type} 실패: {e}")
+        return []
 
-
-# ══════════════════════════════════════════════
-#  벅스 크롤링
-# ══════════════════════════════════════════════
-
-def crawl_bugs_chart(chart_type="실시간"):
+def crawl_bugs(chart_type="실시간"):
     try:
         from bugs import ChartData as BugsChartData
         chart = BugsChartData()
-        rows = []
-        for entry in chart:
-            rows.append({
-                "rank": entry.rank,
-                "title": entry.title,
-                "artist": entry.artist,
-            })
-        rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  벅스 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
-        return rank
+        return [{"rank": e.rank, "title": e.title, "artist": e.artist} for e in chart]
     except Exception as e:
-        err_msg = f"벅스 {chart_type} 크롤링 실패: {str(e)}"
-        log(f"  ❌ {err_msg}")
-        errors.append(err_msg)
-        return None
+        errors.append(f"벅스 {chart_type} 크롤링 실패: {e}")
+        log(f"  ❌ 벅스 {chart_type} 실패: {e}")
+        return []
 
-
-# ══════════════════════════════════════════════
-#  플로 크롤링
-# ══════════════════════════════════════════════
-
-def crawl_flo_chart(chart_type="실시간"):
+def crawl_flo(chart_type="실시간"):
     try:
         from flo import ChartData as FloChartData
         chart = FloChartData()
-        rows = []
-        for entry in chart:
-            rows.append({
-                "rank": entry.rank,
-                "title": entry.title,
-                "artist": entry.artist,
-            })
-        rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  플로 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
-        return rank
+        return [{"rank": e.rank, "title": e.title, "artist": e.artist} for e in chart]
     except Exception as e:
-        err_msg = f"플로 {chart_type} 크롤링 실패: {str(e)}"
-        log(f"  ❌ {err_msg}")
-        errors.append(err_msg)
-        return None
+        errors.append(f"플로 {chart_type} 크롤링 실패: {e}")
+        log(f"  ❌ 플로 {chart_type} 실패: {e}")
+        return []
 
-
-# ══════════════════════════════════════════════
-#  바이브 크롤링
-# ══════════════════════════════════════════════
-
-def crawl_vibe_chart(chart_type="TOP100"):
+def crawl_vibe(chart_type="TOP100"):
     try:
         from vibe import ChartData as VibeChartData
         chart = VibeChartData()
-        rows = []
-        for entry in chart:
-            rows.append({
-                "rank": entry.rank,
-                "title": entry.title,
-                "artist": entry.artist,
-            })
-        rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  바이브 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
-        return rank
+        return [{"rank": e.rank, "title": e.title, "artist": e.artist} for e in chart]
     except Exception as e:
-        err_msg = f"바이브 {chart_type} 크롤링 실패: {str(e)}"
-        log(f"  ❌ {err_msg}")
-        errors.append(err_msg)
-        return None
+        errors.append(f"바이브 {chart_type} 크롤링 실패: {e}")
+        log(f"  ❌ 바이브 {chart_type} 실패: {e}")
+        return []
 
-
-# ══════════════════════════════════════════════
-#  Apple Music Charts (RSS Feed)
-# ══════════════════════════════════════════════
-
-def crawl_apple_chart(chart_type="Korea Top 100"):
-    urls = {
-        "Korea Top 100": "https://rss.marketingtools.apple.com/api/v2/kr/music/most-played/100/songs.json",
-        "Global Top 100": "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/100/songs.json",
-    }
+def crawl_apple(chart_type="Korea Top 100"):
+    urls = {"Korea Top 100": "https://rss.marketingtools.apple.com/api/v2/kr/music/most-played/100/songs.json",
+            "Global Top 100": "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/100/songs.json"}
     url = urls.get(chart_type, urls["Korea Top 100"])
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        data = resp.json()
-        rows = []
-        results = data.get("feed", {}).get("results", [])
-        for i, item in enumerate(results, 1):
-            rows.append({
-                "rank": i,
-                "title": item.get("name", ""),
-                "artist": item.get("artistName", ""),
-            })
-        rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  Apple Music {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
-        return rank
+        results = resp.json().get("feed", {}).get("results", [])
+        return [{"rank": i, "title": item.get("name", ""), "artist": item.get("artistName", "")}
+                for i, item in enumerate(results, 1)]
     except Exception as e:
-        err_msg = f"Apple Music {chart_type} 크롤링 실패: {str(e)}"
-        log(f"  ❌ {err_msg}")
-        errors.append(err_msg)
-        return None
+        errors.append(f"Apple Music {chart_type} 크롤링 실패: {e}")
+        log(f"  ❌ Apple Music {chart_type} 실패: {e}")
+        return []
 
 
 # ══════════════════════════════════════════════
-#  메인 실행
+#  유틸리티
 # ══════════════════════════════════════════════
 
 def load_previous_data():
@@ -266,220 +164,141 @@ def load_previous_data():
     except (FileNotFoundError, json.JSONDecodeError):
         return None
 
-
-def get_prev_rank(prev_data, section, platform, chart_name):
-    if not prev_data:
-        return None
+def get_prev_rank(prev_data, song_title, section, platform, chart_name):
+    if not prev_data: return None
     try:
-        charts = prev_data[section][platform]["charts"]
-        return charts[chart_name]["rank"]
-    except (KeyError, TypeError):
-        return None
-
+        for s in prev_data.get("songs", []):
+            if s["title"] == song_title:
+                return s[section][platform]["charts"][chart_name]["rank"]
+    except (KeyError, TypeError): pass
+    return None
 
 def create_github_issue(errors_list):
     token = os.environ.get("GITHUB_TOKEN")
     repo = os.environ.get("GITHUB_REPOSITORY")
-    if not token or not repo:
-        log("⚠️ GitHub Token/Repo 없음 - Issue 생성 스킵")
-        return
+    if not token or not repo: return
     now = datetime.now(KST).strftime("%Y-%m-%d %H:%M")
-    title = f"🚨 차트 크롤링 오류 발생 ({now} KST)"
-    body = f"""## 크롤링 오류 알림
-
-**발생 시각**: {now} KST
-**오류 건수**: {len(errors_list)}건
-
-### 오류 상세
-
-"""
+    body = f"## 크롤링 오류 알림\n\n**발생 시각**: {now} KST\n**오류 건수**: {len(errors_list)}건\n\n### 오류 상세\n\n"
     for i, err in enumerate(errors_list, 1):
         body += f"{i}. `{err}`\n"
-    body += """
-### 조치 방법
-
-1. 해당 사이트에 직접 접속하여 페이지 구조가 변경되었는지 확인
-2. `scripts/crawl_charts.py`의 해당 크롤링 함수 수정
-3. 수정 후 Actions 탭에서 수동 실행하여 테스트
-
-> 이 Issue는 자동 생성되었습니다.
-"""
+    body += "\n> 이 Issue는 자동 생성되었습니다."
     try:
-        resp = requests.post(
-            f"https://api.github.com/repos/{repo}/issues",
-            headers={
-                "Authorization": f"token {token}",
-                "Accept": "application/vnd.github.v3+json",
-            },
-            json={
-                "title": title,
-                "body": body,
-                "labels": ["bug", "crawling-error"],
-            },
-            timeout=15,
-        )
-        if resp.status_code == 201:
-            log(f"✅ GitHub Issue 생성 완료: {resp.json().get('html_url')}")
-        else:
-            log(f"⚠️ GitHub Issue 생성 실패: {resp.status_code}")
-    except Exception as e:
-        log(f"⚠️ GitHub Issue 생성 실패: {e}")
+        requests.post(f"https://api.github.com/repos/{repo}/issues",
+            headers={"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"},
+            json={"title": f"🚨 차트 크롤링 오류 발생 ({now} KST)", "body": body, "labels": ["bug", "crawling-error"]},
+            timeout=15)
+    except: pass
 
+
+# ══════════════════════════════════════════════
+#  플랫폼 정의
+# ══════════════════════════════════════════════
+
+DOMESTIC_PLATFORMS = {
+    "melon":  {"name": "멜론",  "letter": "M", "bgClass": "bg-melon",  "crawl": crawl_melon,
+               "chart_types": ["TOP100"], "representative": "TOP100",
+               "chartMeta": {"TOP100": "실시간 종합 (매시 갱신)"}},
+    "genie":  {"name": "지니",  "letter": "G", "bgClass": "bg-genie",  "crawl": crawl_genie,
+               "chart_types": ["TOP200"], "representative": "TOP200",
+               "chartMeta": {"TOP200": "실시간 종합 (매시 갱신)"}},
+    "bugs":   {"name": "벅스",  "letter": "B", "bgClass": "bg-bugs",   "crawl": crawl_bugs,
+               "chart_types": ["실시간"], "representative": "실시간",
+               "chartMeta": {"실시간": "실시간 인기 차트 (매시 갱신)"}},
+    "flo":    {"name": "플로",  "letter": "F", "bgClass": "bg-flo",    "crawl": crawl_flo,
+               "chart_types": ["실시간"], "representative": "실시간",
+               "chartMeta": {"실시간": "실시간 차트 (매시 갱신)"}},
+    "vibe":   {"name": "바이브", "letter": "V", "bgClass": "bg-vibe",  "crawl": crawl_vibe,
+               "chart_types": ["TOP100"], "representative": "TOP100",
+               "chartMeta": {"TOP100": "국내 인기 종합 차트"}},
+}
+
+GLOBAL_PLATFORMS = {
+    "apple":  {"name": "Apple Music", "letter": "♫", "bgClass": "bg-apple", "crawl": crawl_apple,
+               "chart_types": ["Korea Top 100", "Global Top 100"], "representative": "Korea Top 100",
+               "chartMeta": {"Korea Top 100": "한국 인기 100곡", "Global Top 100": "전 세계 인기 100곡"}},
+}
+
+
+# ══════════════════════════════════════════════
+#  메인 실행
+# ══════════════════════════════════════════════
 
 def main():
     log("=" * 50)
-    log("BTS 'Swim' 차트 크롤링 시작")
+    log(f"BTS 차트 크롤링 시작 — 트래킹 곡: {', '.join(t['title'] for t in TRACKS)}")
     log("=" * 50)
 
     prev_data = load_previous_data()
+    songs_result = []
 
-    # ── 국내 차트 크롤링 ──
-    log("\n📌 국내 차트 수집 중...")
-    domestic = {}
+    for track in TRACKS:
+        title = track["title"]
+        emoji = track["emoji"]
+        log(f"\n🎵 [{title}] 순위 수집 중...")
 
-    # 멜론
-    log("  [멜론]")
-    melon_charts = {}
-    for ct in ["TOP100", "HOT100", "일간", "주간"]:
-        rank = crawl_melon_chart(ct)
-        prev = get_prev_rank(prev_data, "domestic", "melon", ct)
-        melon_charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
-    melon_charts["HOT100 발매 30일"] = melon_charts.get("HOT100", {"rank": "-", "change": "-"})
-    melon_charts["HOT100 발매 100일"] = melon_charts.get("HOT100", {"rank": "-", "change": "-"})
-    domestic["melon"] = {
-        "name": "멜론", "letter": "M", "bgClass": "bg-melon",
-        "representative": "TOP100",
-        "charts": melon_charts,
-        "chartMeta": {
-            "TOP100": "실시간 종합 (매시 갱신)", "HOT100": "인기도 종합 차트",
-            "HOT100 발매 30일": "발매 30일 이내 인기곡", "HOT100 발매 100일": "발매 100일 이내 인기곡",
-            "일간": "일간 종합 차트", "주간": "주간 종합 차트",
-        }
-    }
+        # ── 국내 ──
+        domestic = {}
+        for key, pf in DOMESTIC_PLATFORMS.items():
+            charts = {}
+            for ct in pf["chart_types"]:
+                log(f"  [{pf['name']}] {ct}")
+                rows = pf["crawl"](ct)
+                rank = find_rank_in_rows(rows, title, ARTIST_KEYWORDS)
+                prev = get_prev_rank(prev_data, title, "domestic", key, ct)
+                charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
+                log(f"    {title}: {'#' + str(rank) if rank else '차트 밖'}")
+            domestic[key] = {
+                "name": pf["name"], "letter": pf["letter"], "bgClass": pf["bgClass"],
+                "representative": pf["representative"], "charts": charts, "chartMeta": pf["chartMeta"],
+            }
 
-    # 지니
-    log("  [지니]")
-    genie_charts = {}
-    for ct in ["TOP200"]:
-        rank = crawl_genie_chart(ct)
-        prev = get_prev_rank(prev_data, "domestic", "genie", ct)
-        genie_charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
-    domestic["genie"] = {
-        "name": "지니", "letter": "G", "bgClass": "bg-genie",
-        "representative": "TOP200",
-        "charts": genie_charts,
-        "chartMeta": {"TOP200": "실시간 종합 (매시 갱신)"}
-    }
+        # ── 글로벌 ──
+        global_charts = {}
+        for key, pf in GLOBAL_PLATFORMS.items():
+            charts = {}
+            for ct in pf["chart_types"]:
+                log(f"  [{pf['name']}] {ct}")
+                rows = pf["crawl"](ct)
+                rank = find_rank_in_rows(rows, title, ARTIST_KEYWORDS)
+                prev = get_prev_rank(prev_data, title, "global", key, ct)
+                charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
+                log(f"    {title}: {'#' + str(rank) if rank else '차트 밖'}")
+            global_charts[key] = {
+                "name": pf["name"], "letter": pf["letter"], "bgClass": pf["bgClass"],
+                "representative": pf["representative"], "charts": charts, "chartMeta": pf["chartMeta"],
+            }
 
-    # 벅스
-    log("  [벅스]")
-    bugs_charts = {}
-    for ct in ["실시간"]:
-        rank = crawl_bugs_chart(ct)
-        prev = get_prev_rank(prev_data, "domestic", "bugs", ct)
-        bugs_charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
-    domestic["bugs"] = {
-        "name": "벅스", "letter": "B", "bgClass": "bg-bugs",
-        "representative": "실시간",
-        "charts": bugs_charts,
-        "chartMeta": {"실시간": "실시간 인기 차트 (매시 갱신)"}
-    }
+        # Spotify / YouTube — 연동 준비 중
+        global_charts["spotify"] = {
+            "name": "Spotify", "letter": "S", "bgClass": "bg-spotify",
+            "representative": "Korea Top 50", "coming_soon": True,
+            "charts": {"Korea Top 50": {"rank": "-", "change": "-"}},
+            "chartMeta": {"Korea Top 50": "연동 준비 중"}}
+        global_charts["youtube"] = {
+            "name": "YouTube Music", "letter": "Y", "bgClass": "bg-youtube",
+            "representative": "Korea Top 100", "coming_soon": True,
+            "charts": {"Korea Top 100": {"rank": "-", "change": "-"}},
+            "chartMeta": {"Korea Top 100": "연동 준비 중"}}
 
-    # 플로
-    log("  [플로]")
-    flo_charts = {}
-    for ct in ["실시간"]:
-        rank = crawl_flo_chart(ct)
-        prev = get_prev_rank(prev_data, "domestic", "flo", ct)
-        flo_charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
-    domestic["flo"] = {
-        "name": "플로", "letter": "F", "bgClass": "bg-flo",
-        "representative": "실시간",
-        "charts": flo_charts,
-        "chartMeta": {"실시간": "실시간 차트 (매시 갱신)"}
-    }
-
-    # 바이브
-    log("  [바이브]")
-    vibe_charts = {}
-    for ct in ["TOP100"]:
-        rank = crawl_vibe_chart(ct)
-        prev = get_prev_rank(prev_data, "domestic", "vibe", ct)
-        vibe_charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
-    domestic["vibe"] = {
-        "name": "바이브", "letter": "V", "bgClass": "bg-vibe",
-        "representative": "TOP100",
-        "charts": vibe_charts,
-        "chartMeta": {"TOP100": "국내 인기 종합 차트"}
-    }
-
-    # ── 글로벌 차트 ──
-    log("\n📌 글로벌 차트 수집 중...")
-    global_charts = {}
-
-    # Apple Music
-    log("  [Apple Music]")
-    apple_charts = {}
-    for ct in ["Korea Top 100", "Global Top 100"]:
-        rank = crawl_apple_chart(ct)
-        prev = get_prev_rank(prev_data, "global", "apple", ct)
-        apple_charts[ct] = {"rank": rank if rank else "-", "change": calc_change(rank, prev)}
-    global_charts["apple"] = {
-        "name": "Apple Music", "letter": "♫", "bgClass": "bg-apple",
-        "representative": "Korea Top 100",
-        "charts": apple_charts,
-        "chartMeta": {"Korea Top 100": "한국 인기 100곡", "Global Top 100": "전 세계 인기 100곡"}
-    }
-
-    # Spotify - 연동 준비 중
-    log("  [Spotify] 연동 준비 중 - 스킵")
-    global_charts["spotify"] = {
-        "name": "Spotify", "letter": "S", "bgClass": "bg-spotify",
-        "representative": "Korea Top 50",
-        "coming_soon": True,
-        "charts": {"Korea Top 50": {"rank": "-", "change": "-"}},
-        "chartMeta": {"Korea Top 50": "연동 준비 중"}
-    }
-
-    # YouTube Music - 연동 준비 중
-    log("  [YouTube Music] 연동 준비 중 - 스킵")
-    global_charts["youtube"] = {
-        "name": "YouTube Music", "letter": "Y", "bgClass": "bg-youtube",
-        "representative": "Korea Top 100",
-        "coming_soon": True,
-        "charts": {"Korea Top 100": {"rank": "-", "change": "-"}},
-        "chartMeta": {"Korea Top 100": "연동 준비 중"}
-    }
+        songs_result.append({
+            "title": title, "emoji": emoji,
+            "domestic": domestic, "global": global_charts,
+        })
 
     # ── JSON 저장 ──
     result = {
         "lastUpdated": datetime.now(KST).strftime("%Y-%m-%d %H:%M"),
-        "song": TRACK_TITLE,
         "artist": "BTS (방탄소년단)",
-        "domestic": domestic,
-        "global": global_charts,
+        "songs": songs_result,
     }
     out_path = os.path.join(os.path.dirname(__file__), "..", "data", "charts.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     log(f"\n✅ 데이터 저장 완료: data/charts.json")
 
-    # ── 에러 처리 ──
     if errors:
-        log(f"\n⚠️ {len(errors)}건의 오류 발생 - GitHub Issue 생성 중...")
+        log(f"\n⚠️ {len(errors)}건의 오류 발생")
         create_github_issue(errors)
-        total_charts = 0
-        failed_charts = len(errors)
-        for p in domestic.values():
-            total_charts += len(p["charts"])
-        for p in global_charts.values():
-            if not p.get("coming_soon"):
-                total_charts += len(p["charts"])
-        if failed_charts >= total_charts:
-            log("❌ 전체 크롤링 실패!")
-            sys.exit(1)
-        else:
-            log(f"⚠️ 일부 실패 ({failed_charts}/{total_charts}) - 성공 데이터는 반영됨")
     else:
         log("\n🎉 모든 차트 크롤링 성공!")
 
