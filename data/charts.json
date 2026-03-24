@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24 18:46",
+  "lastUpdated": "2026-03-24 19:20",
   "song": "Swim",
   "artist": "BTS (방탄소년단)",
   "domestic": {
@@ -51,7 +51,7 @@
       "charts": {
         "TOP200": {
           "rank": 1,
-          "change": "NEW"
+          "change": 0
         }
       },
       "chartMeta": {
@@ -65,8 +65,8 @@
       "representative": "실시간",
       "charts": {
         "실시간": {
-          "rank": 2,
-          "change": 0
+          "rank": 3,
+          "change": -1
         }
       },
       "chartMeta": {
@@ -116,8 +116,8 @@
           "change": 0
         },
         "Global Top 100": {
-          "rank": 15,
-          "change": 0
+          "rank": 14,
+          "change": 1
         }
       },
       "chartMeta": {
