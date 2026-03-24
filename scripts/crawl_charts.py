@@ -143,8 +143,10 @@ def crawl_vibe(chart_type="TOP100"):
         return []
 
 def crawl_apple(chart_type="Korea Top 100"):
-    urls = {"Korea Top 100": "https://rss.marketingtools.apple.com/api/v2/kr/music/most-played/100/songs.json",
-            "Global Top 100": "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/100/songs.json"}
+    urls = {
+        "Korea Top 100": "https://rss.marketingtools.apple.com/api/v2/kr/music/most-played/100/songs.json",
+        "US Top 100": "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/100/songs.json",
+    }
     url = urls.get(chart_type, urls["Korea Top 100"])
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
@@ -221,8 +223,8 @@ DOMESTIC_PLATFORMS = {
 
 GLOBAL_PLATFORMS = {
     "apple":  {"name": "Apple Music", "letter": "♫", "bgClass": "bg-apple", "crawl": crawl_apple,
-               "chart_types": ["Korea Top 100", "Global Top 100"], "representative": "Korea Top 100",
-               "chartMeta": {"Korea Top 100": "한국 인기 100곡", "Global Top 100": "전 세계 인기 100곡"}},
+               "chart_types": ["Korea Top 100", "US Top 100"], "representative": "Korea Top 100",
+               "chartMeta": {"Korea Top 100": "한국 인기 100곡", "US Top 100": "미국 인기 100곡"}},
 }
 
 
