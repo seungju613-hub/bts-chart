@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BTS "Swim" 차트 트래커 | ARMY STREAM</title>
-<meta name="description" content="BTS 방탄소년단 Swim 실시간 음원 차트 순위를 한눈에 확인하세요.">
-<meta property="og:title" content="BTS Swim 차트 트래커 | ARMY STREAM">
-<meta property="og:description" content="멜론, 지니, 벅스, 스포티파이 등 실시간 순위 확인 · 1시간마다 자동 업데이트">
+<title>아미차트 | BTS "Swim" 실시간 차트 트래커</title>
+<meta name="description" content="BTS 방탄소년단 Swim 실시간 음원 차트 순위를 한눈에 확인하세요. 아미차트 ARMY CHART">
+<meta property="og:title" content="아미차트 ARMY CHART | BTS Swim 실시간 순위">
+<meta property="og:description" content="멜론, 지니, 벅스, 애플뮤직 등 실시간 순위 확인 · 1시간마다 자동 업데이트">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -138,8 +138,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-deep);color:var(-
 <div class="wrap">
   <div class="header">
     <div class="logo-area">
-      <div class="logo">ARMY STREAM</div>
-      <div class="logo-sub">차트 트래커</div>
+      <div class="logo">ARMY CHART</div>
+      <div class="logo-sub">아미차트</div>
     </div>
     <div class="time-box">
       <div class="time-dot"></div>
@@ -166,6 +166,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-deep);color:var(-
   </div>
   <div class="last-update">
     마지막 업데이트: <span id="update-time">불러오는 중...</span>
+  </div>
+
+  <div style="padding:14px 18px;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,0.15);border-radius:12px;margin-bottom:32px;font-size:13px;color:var(--text-secondary);line-height:1.7">
+    ℹ️ 순위는 1시간마다 자동 업데이트됩니다. 음원사이트의 변경으로 일부 차트가 수집되지 않을 수 있으니, 정확한 순위는 각 음원사이트에서 직접 확인해 주세요.
   </div>
 
   <div class="section-label">DOMESTIC CHARTS</div>
@@ -240,6 +244,22 @@ function renderCard(section, key, p) {
   const repName = p.representative;
   const repData = p.charts[repName] || { rank: '-', change: '-' };
   
+  if (p.coming_soon) {
+    return `
+    <div class="chart-card" style="opacity:0.6;cursor:default">
+      <div class="top-row">
+        <div class="platform-dot ${p.bgClass}">${p.letter}</div>
+        <div>
+          <div class="platform-name">${p.name}</div>
+          <div class="chart-name">${repName}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+        <span style="font-size:13px;color:var(--purple-400);background:rgba(139,92,246,0.1);padding:4px 12px;border-radius:8px;font-weight:500">연동 준비 중</span>
+      </div>
+    </div>`;
+  }
+  
   return `
     <div class="chart-card" onclick="openModal('${section}','${key}')">
       <div class="top-row">
@@ -281,6 +301,18 @@ function renderGrids() {
   }
 }
 
+// ── 플랫폼 링크 ──
+const PLATFORM_LINKS = {
+  melon: { name: "멜론", url: "https://www.melon.com/chart/index.htm", app: "melonapp://" },
+  genie: { name: "지니", url: "https://www.genie.co.kr/chart/top200", app: "genie://" },
+  bugs: { name: "벅스", url: "https://music.bugs.co.kr/chart", app: "bugs://" },
+  flo: { name: "플로", url: "https://www.music-flo.com/browse/chart", app: "flo://" },
+  vibe: { name: "바이브", url: "https://vibe.naver.com/chart", app: "navervibe://" },
+  spotify: { name: "Spotify", url: "https://charts.spotify.com", app: "spotify://" },
+  apple: { name: "Apple Music", url: "https://music.apple.com/kr/playlist/top-100-대한민국/pl.d3d10c32fbc540b38e266367dc8cb00c", app: "music://" },
+  youtube: { name: "YouTube Music", url: "https://charts.youtube.com/charts/TopSongs/kr", app: "youtubemusic://" },
+};
+
 // ── 모달 ──
 function openModal(section, key) {
   if (!chartData) return;
@@ -288,6 +320,7 @@ function openModal(section, key) {
   if (!p) return;
   
   const meta = p.chartMeta || {};
+  const link = PLATFORM_LINKS[key] || {};
   const rows = Object.entries(p.charts).map(([name, d]) => `
     <div class="modal-chart-row">
       <div>
@@ -302,6 +335,17 @@ function openModal(section, key) {
       </div>
     </div>`).join('');
 
+  const linkBtn = link.url ? `
+    <div style="display:flex;gap:10px;margin-top:18px">
+      <a href="${link.url}" target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:12px;color:var(--purple-300);text-decoration:none;font-size:14px;font-weight:600;transition:all 0.2s" onmouseover="this.style.background='rgba(139,92,246,0.2)'" onmouseout="this.style.background='rgba(139,92,246,0.12)'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        ${p.name} 웹사이트로 이동
+      </a>
+      <a href="${link.app}" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 20px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;color:var(--text-muted);text-decoration:none;font-size:13px;transition:all 0.2s" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+        앱 열기
+      </a>
+    </div>` : '';
+
   document.getElementById('modal-content').innerHTML = `
     <div class="modal-header">
       <div class="platform-dot ${p.bgClass}">${p.letter}</div>
@@ -309,6 +353,7 @@ function openModal(section, key) {
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-chart-list">${rows}</div>
+    ${linkBtn}
     <div class="modal-note">
       BTS "${chartData.song}" 기준 · 마지막 업데이트: ${chartData.lastUpdated} KST
     </div>`;
