@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-24 21:37",
+  "lastUpdated": "2026-03-24 21:50",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -68,7 +68,7 @@
             },
             "일간": {
               "rank": 1,
-              "change": "NEW"
+              "change": 0
             }
           },
           "chartMeta": {
@@ -118,14 +118,14 @@
               "rank": 4,
               "change": 0
             },
-            "Global Top 100": {
+            "US Top 100": {
               "rank": 14,
-              "change": 0
+              "change": "NEW"
             }
           },
           "chartMeta": {
             "Korea Top 100": "한국 인기 100곡",
-            "Global Top 100": "전 세계 인기 100곡"
+            "US Top 100": "미국 인기 100곡"
           }
         },
         "spotify": {
@@ -228,7 +228,7 @@
             },
             "일간": {
               "rank": 5,
-              "change": "NEW"
+              "change": 0
             }
           },
           "chartMeta": {
@@ -278,14 +278,14 @@
               "rank": 5,
               "change": 0
             },
-            "Global Top 100": {
+            "US Top 100": {
               "rank": 36,
-              "change": 0
+              "change": "NEW"
             }
           },
           "chartMeta": {
             "Korea Top 100": "한국 인기 100곡",
-            "Global Top 100": "전 세계 인기 100곡"
+            "US Top 100": "미국 인기 100곡"
           }
         },
         "spotify": {
