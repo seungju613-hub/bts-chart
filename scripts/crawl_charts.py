@@ -111,11 +111,11 @@ def crawl_genie(chart_type="TOP200"):
 
 def crawl_bugs(chart_type="실시간"):
     try:
-        from bugs import ChartData as BugsChartData
+        from bugs import ChartData as BugsChartData, BugsChartPeriod
         if chart_type == "일간":
-            chart = BugsChartData(chartType="day")
+            chart = BugsChartData(chartPeriod=BugsChartPeriod.Daily)
         else:
-            chart = BugsChartData()
+            chart = BugsChartData(chartPeriod=BugsChartPeriod.Realtime)
         return [{"rank": e.rank, "title": e.title, "artist": e.artist} for e in chart]
     except Exception as e:
         errors.append(f"벅스 {chart_type} 크롤링 실패: {e}")
