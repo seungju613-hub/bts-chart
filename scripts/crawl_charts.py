@@ -82,7 +82,10 @@ def crawl_melon(chart_type="TOP100"):
         return []
 
 def crawl_genie(chart_type="TOP200"):
-    urls = {"TOP200": "https://www.genie.co.kr/chart/top200"}
+    urls = {
+        "TOP200": "https://www.genie.co.kr/chart/top200",
+        "일간": "https://www.genie.co.kr/chart/top200?ditc=D",
+    }
     url = urls.get(chart_type, urls["TOP200"])
     try:
         resp = requests.get(url, headers=HEADERS, timeout=15)
@@ -109,7 +112,10 @@ def crawl_genie(chart_type="TOP200"):
 def crawl_bugs(chart_type="실시간"):
     try:
         from bugs import ChartData as BugsChartData
-        chart = BugsChartData()
+        if chart_type == "일간":
+            chart = BugsChartData(chartType="day")
+        else:
+            chart = BugsChartData()
         return [{"rank": e.rank, "title": e.title, "artist": e.artist} for e in chart]
     except Exception as e:
         errors.append(f"벅스 {chart_type} 크롤링 실패: {e}")
@@ -196,14 +202,15 @@ def create_github_issue(errors_list):
 
 DOMESTIC_PLATFORMS = {
     "melon":  {"name": "멜론",  "letter": "M", "bgClass": "bg-melon",  "crawl": crawl_melon,
-               "chart_types": ["TOP100"], "representative": "TOP100",
-               "chartMeta": {"TOP100": "실시간 종합 (매시 갱신)"}},
+               "chart_types": ["TOP100", "HOT100", "일간", "주간"], "representative": "TOP100",
+               "chartMeta": {"TOP100": "실시간 종합 (매시 갱신)", "HOT100": "인기도 종합 차트",
+                             "일간": "일간 종합 차트", "주간": "주간 종합 차트"}},
     "genie":  {"name": "지니",  "letter": "G", "bgClass": "bg-genie",  "crawl": crawl_genie,
-               "chart_types": ["TOP200"], "representative": "TOP200",
-               "chartMeta": {"TOP200": "실시간 종합 (매시 갱신)"}},
+               "chart_types": ["TOP200", "일간"], "representative": "TOP200",
+               "chartMeta": {"TOP200": "실시간 종합 (매시 갱신)", "일간": "일간 종합 차트"}},
     "bugs":   {"name": "벅스",  "letter": "B", "bgClass": "bg-bugs",   "crawl": crawl_bugs,
-               "chart_types": ["실시간"], "representative": "실시간",
-               "chartMeta": {"실시간": "실시간 인기 차트 (매시 갱신)"}},
+               "chart_types": ["실시간", "일간"], "representative": "실시간",
+               "chartMeta": {"실시간": "실시간 인기 차트 (매시 갱신)", "일간": "일간 종합 차트"}},
     "flo":    {"name": "플로",  "letter": "F", "bgClass": "bg-flo",    "crawl": crawl_flo,
                "chart_types": ["실시간"], "representative": "실시간",
                "chartMeta": {"실시간": "실시간 차트 (매시 갱신)"}},
