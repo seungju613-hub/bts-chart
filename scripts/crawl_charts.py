@@ -215,25 +215,16 @@ def crawl_bugs_chart(chart_type="실시간"):
 # ══════════════════════════════════════════════
 
 def crawl_flo_chart(chart_type="실시간"):
-    """플로 차트 크롤링 (API 활용)"""
-    urls = {
-        "실시간": "https://www.music-flo.com/api/display/v2/browser/chart/1/track/list?size=100",
-        "일간": "https://www.music-flo.com/api/display/v2/browser/chart/2/track/list?size=100",
-    }
-    url = urls.get(chart_type, urls["실시간"])
-    
+    """플로 차트 크롤링 (flo-chart.py 라이브러리 활용)"""
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        
+        from flo import ChartData as FloChartData
+        chart = FloChartData()
         rows = []
-        for i, item in enumerate(data.get("data", {}).get("trackList", []), 1):
+        for entry in chart:
             rows.append({
-                "rank": i,
-                "title": item.get("name", ""),
-                "artist": item.get("artistName", "") or 
-                         ", ".join(a.get("name", "") for a in item.get("artistList", [])),
+                "rank": entry.rank,
+                "title": entry.title,
+                "artist": entry.artist,
             })
         
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
@@ -252,35 +243,16 @@ def crawl_flo_chart(chart_type="실시간"):
 # ══════════════════════════════════════════════
 
 def crawl_vibe_chart(chart_type="TOP100"):
-    """바이브(네이버) 차트 크롤링"""
-    urls = {
-        "TOP100": "https://apis.naver.com/vibeWeb/musicapiweb/vibe/v4/chart/track/total?start=1&display=100",
-        "급상승": "https://apis.naver.com/vibeWeb/musicapiweb/vibe/v4/chart/track/rise?start=1&display=100",
-    }
-    url = urls.get(chart_type, urls["TOP100"])
-    
+    """바이브(네이버) 차트 크롤링 (vibe-chart.py 라이브러리 활용)"""
     try:
-        vibe_headers = {
-            **HEADERS,
-            "Referer": "https://vibe.naver.com/chart",
-            "Accept": "application/json",
-        }
-        resp = requests.get(url, headers=vibe_headers, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        
+        from vibe import ChartData as VibeChartData
+        chart = VibeChartData()
         rows = []
-        track_list = data.get("response", {}).get("result", {}).get("chartTrackList", [])
-        for i, item in enumerate(track_list, 1):
-            track = item.get("trackTitle", "")
-            artists = ", ".join(
-                a.get("artistName", "") 
-                for a in item.get("artists", [])
-            )
+        for entry in chart:
             rows.append({
-                "rank": item.get("rank", {}).get("currentRank", i),
-                "title": track,
-                "artist": artists,
+                "rank": entry.rank,
+                "title": entry.title,
+                "artist": entry.artist,
             })
         
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
@@ -299,33 +271,61 @@ def crawl_vibe_chart(chart_type="TOP100"):
 # ══════════════════════════════════════════════
 
 def crawl_spotify_chart(chart_type="Korea Top 50"):
-    """스포티파이 차트 (Spotify Charts 페이지)"""
-    chart_ids = {
-        "Korea Top 50": "regional-kr-daily",
-        "Global Top 50": "regional-global-daily",
-        "Global Viral 50": "viral-global-daily",
+    """스포티파이 차트 (charts.spotify.com HTML 스크래핑)"""
+    # Spotify Charts 페이지에서 JSON 데이터 추출 시도
+    chart_urls = {
+        "Korea Top 50": "https://charts.spotify.com/charts/view/regional-kr-daily/latest",
+        "Global Top 50": "https://charts.spotify.com/charts/view/regional-global-daily/latest",
+        "Global Viral 50": "https://charts.spotify.com/charts/view/viral-global-daily/latest",
     }
-    chart_id = chart_ids.get(chart_type, "regional-kr-daily")
-    url = f"https://charts-spotify-com-service.spotify.com/public/v2/charts/{chart_id}"
+    url = chart_urls.get(chart_type, chart_urls["Korea Top 50"])
     
     try:
         resp = requests.get(url, headers={
             **HEADERS,
-            "Accept": "application/json",
+            "Accept": "text/html,application/xhtml+xml",
         }, timeout=15)
         resp.raise_for_status()
-        data = resp.json()
         
+        soup = BeautifulSoup(resp.text, "html.parser")
         rows = []
-        for entry in data.get("entries", []):
-            rows.append({
-                "rank": entry.get("chartEntryData", {}).get("currentRank", 0),
-                "title": entry.get("trackMetadata", {}).get("trackName", ""),
-                "artist": ", ".join(
-                    a.get("name", "") 
-                    for a in entry.get("trackMetadata", {}).get("artists", [])
-                ),
-            })
+        
+        # Spotify Charts 페이지의 차트 데이터 파싱
+        import re
+        # 페이지 내 JSON 데이터에서 차트 정보 추출 시도
+        scripts = soup.find_all("script")
+        for script in scripts:
+            text = script.string or ""
+            if "chartEntryData" in text or "trackName" in text:
+                # JSON 데이터 추출
+                json_match = re.search(r'\{.*"entries".*\}', text, re.DOTALL)
+                if json_match:
+                    data = json.loads(json_match.group())
+                    for entry in data.get("entries", []):
+                        rows.append({
+                            "rank": entry.get("chartEntryData", {}).get("currentRank", 0),
+                            "title": entry.get("trackMetadata", {}).get("trackName", ""),
+                            "artist": ", ".join(
+                                a.get("name", "")
+                                for a in entry.get("trackMetadata", {}).get("artists", [])
+                            ),
+                        })
+                    break
+        
+        # HTML 테이블/리스트 파싱 폴백
+        if not rows:
+            for i, item in enumerate(soup.select("[class*='ChartEntry'], [class*='chart-entry'], tr[class*='Row']"), 1):
+                title_el = item.select_one("[class*='track-name'], [class*='Title'], td:nth-child(3)")
+                artist_el = item.select_one("[class*='artist'], [class*='Artist'], td:nth-child(4)")
+                if title_el:
+                    rows.append({
+                        "rank": i,
+                        "title": title_el.get_text(strip=True),
+                        "artist": artist_el.get_text(strip=True) if artist_el else "",
+                    })
+        
+        if not rows:
+            raise Exception("차트 데이터를 찾을 수 없음 (로그인 필요 가능성)")
         
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
         log(f"  Spotify {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
