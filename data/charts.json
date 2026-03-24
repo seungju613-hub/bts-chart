@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25 01:13",
+  "lastUpdated": "2026-03-25 04:37",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -14,7 +14,7 @@
           "charts": {
             "TOP100": {
               "rank": 2,
-              "change": -1
+              "change": 0
             },
             "HOT100": {
               "rank": 1,
@@ -44,11 +44,11 @@
           "charts": {
             "TOP200": {
               "rank": 16,
-              "change": -15
+              "change": 0
             },
             "일간": {
               "rank": 16,
-              "change": -15
+              "change": 0
             }
           },
           "chartMeta": {
@@ -64,7 +64,7 @@
           "charts": {
             "실시간": {
               "rank": 5,
-              "change": -2
+              "change": 0
             },
             "일간": {
               "rank": 1,
@@ -119,8 +119,8 @@
               "change": 0
             },
             "US Top 100": {
-              "rank": 14,
-              "change": 0
+              "rank": 12,
+              "change": 2
             }
           },
           "chartMeta": {
@@ -174,7 +174,7 @@
           "charts": {
             "TOP100": {
               "rank": 5,
-              "change": -3
+              "change": 0
             },
             "HOT100": {
               "rank": 2,
@@ -204,11 +204,11 @@
           "charts": {
             "TOP200": {
               "rank": 17,
-              "change": 1
+              "change": 0
             },
             "일간": {
               "rank": 17,
-              "change": 1
+              "change": 0
             }
           },
           "chartMeta": {
@@ -224,7 +224,7 @@
           "charts": {
             "실시간": {
               "rank": 7,
-              "change": -1
+              "change": 0
             },
             "일간": {
               "rank": 5,
@@ -275,12 +275,12 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 5,
-              "change": 0
+              "rank": 7,
+              "change": -2
             },
             "US Top 100": {
-              "rank": 36,
-              "change": 0
+              "rank": 39,
+              "change": -3
             }
           },
           "chartMeta": {
