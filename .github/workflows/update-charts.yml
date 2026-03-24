@@ -1,14 +1,10 @@
 name: 차트 자동 업데이트
 
 on:
-  # 1시간마다 자동 실행 (매 정시)
   schedule:
     - cron: '0 * * * *'
-  
-  # 수동 실행 버튼 (Actions 탭에서 "Run workflow" 클릭)
   workflow_dispatch:
 
-# 파일 쓰기 + Issue 생성 권한
 permissions:
   contents: write
   issues: write
@@ -16,33 +12,27 @@ permissions:
 jobs:
   update-charts:
     runs-on: ubuntu-latest
-        env:
+    env:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-    
+
     steps:
-      # 1. 코드 가져오기
       - name: 코드 체크아웃
         uses: actions/checkout@v4
-      
-      # 2. 파이썬 설치
+
       - name: Python 설치
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      
-      # 3. 필요한 라이브러리 설치
+
       - name: 라이브러리 설치
         run: pip install -r requirements.txt
-      
-      # 4. 크롤링 실행
+
       - name: 차트 크롤링
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: python scripts/crawl_charts.py
-      
-      # 5. 변경사항 커밋 & 푸시
-      # → 푸시하면 Cloudflare Pages가 자동으로 감지해서 재배포합니다
+
       - name: 데이터 커밋
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
