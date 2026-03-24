@@ -153,16 +153,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-deep);color:var(-
     </div>
   </div>
 
-  <div class="song-bar">
-    <div class="song-icon">🌊</div>
-    <div class="song-info">
-      <h2 id="song-title">Swim</h2>
-      <div class="artist" id="song-artist">BTS (방탄소년단)</div>
-    </div>
-    <div class="song-meta">
-      트래킹 곡 <span>타이틀</span><br>
-      1시간마다 자동 업데이트
-    </div>
+  <div id="song-tabs" style="display:flex;gap:10px;margin-bottom:10px">
   </div>
   <div class="last-update">
     마지막 업데이트: <span id="update-time">불러오는 중...</span>
@@ -205,26 +196,53 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-deep);color:var(-
 
 <script>
 let chartData = null;
+let selectedSongIdx = 0;
+
+function getSelectedSong() {
+  if (!chartData || !chartData.songs) return null;
+  return chartData.songs[selectedSongIdx] || chartData.songs[0];
+}
 
 // ── 데이터 불러오기 ──
 async function loadChartData() {
   try {
-    // 캐시 방지: 타임스탬프 쿼리 추가
     const resp = await fetch(`data/charts.json?t=${Date.now()}`);
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     chartData = await resp.json();
-    
     document.getElementById('update-time').textContent = chartData.lastUpdated + ' KST';
-    if (chartData.song) document.getElementById('song-title').textContent = chartData.song;
-    if (chartData.artist) document.getElementById('song-artist').textContent = chartData.artist;
-    
+    renderSongTabs();
     renderGrids();
   } catch (e) {
     console.error('차트 로드 실패:', e);
-    const errHtml = `<div class="error-box"><h3>데이터를 불러올 수 없습니다</h3><p>잠시 후 다시 시도해주세요. 페이지를 새로고침하면 최신 데이터를 확인할 수 있습니다.</p></div>`;
-    document.getElementById('domestic-grid').innerHTML = errHtml;
+    document.getElementById('domestic-grid').innerHTML = `<div class="error-box"><h3>데이터를 불러올 수 없습니다</h3><p>페이지를 새로고침해주세요.</p></div>`;
     document.getElementById('global-grid').innerHTML = '';
   }
+}
+
+// ── 곡 탭 렌더링 ──
+function renderSongTabs() {
+  if (!chartData || !chartData.songs) return;
+  const tabs = document.getElementById('song-tabs');
+  tabs.innerHTML = chartData.songs.map((song, i) => `
+    <div onclick="selectSong(${i})" style="flex:1;padding:16px 20px;border-radius:14px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:14px;
+      ${i === selectedSongIdx
+        ? 'background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(236,72,153,0.08));border:1px solid rgba(124,58,237,0.3)'
+        : 'background:var(--bg-card);border:1px solid var(--border)'}"
+      onmouseover="if(${i}!==${selectedSongIdx})this.style.borderColor='rgba(139,92,246,0.2)'"
+      onmouseout="if(${i}!==${selectedSongIdx})this.style.borderColor='var(--border)'">
+      <div style="width:44px;height:44px;border-radius:12px;background:${i === selectedSongIdx ? 'linear-gradient(135deg,var(--purple-600),var(--pink-500))' : 'rgba(255,255,255,0.06)'};display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">${song.emoji}</div>
+      <div>
+        <div style="font-family:'Outfit',sans-serif;font-size:18px;font-weight:700">${song.title}</div>
+        <div style="font-size:13px;color:var(--purple-300)">${chartData.artist}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectSong(idx) {
+  selectedSongIdx = idx;
+  renderSongTabs();
+  renderGrids();
 }
 
 // ── 렌더링 ──
@@ -245,7 +263,6 @@ function rankHtml(rank) {
 function renderCard(section, key, p) {
   const repName = p.representative;
   const repData = p.charts[repName] || { rank: '-', change: '-' };
-  
   if (p.coming_soon) {
     return `
     <div class="chart-card" style="opacity:0.6;cursor:default">
@@ -261,7 +278,6 @@ function renderCard(section, key, p) {
       </div>
     </div>`;
   }
-  
   return `
     <div class="chart-card" onclick="openModal('${section}','${key}')">
       <div class="top-row">
@@ -283,21 +299,17 @@ function renderCard(section, key, p) {
 }
 
 function renderGrids() {
-  if (!chartData) return;
-  
+  const song = getSelectedSong();
+  if (!song) return;
   const dg = document.getElementById('domestic-grid');
   const gg = document.getElementById('global-grid');
-  
-  if (chartData.domestic && Object.keys(chartData.domestic).length > 0) {
-    dg.innerHTML = Object.entries(chartData.domestic)
-      .map(([k,v]) => renderCard('domestic', k, v)).join('');
+  if (song.domestic && Object.keys(song.domestic).length > 0) {
+    dg.innerHTML = Object.entries(song.domestic).map(([k,v]) => renderCard('domestic', k, v)).join('');
   } else {
     dg.innerHTML = '<div class="loading">아직 수집된 국내 차트 데이터가 없습니다.</div>';
   }
-  
-  if (chartData.global && Object.keys(chartData.global).length > 0) {
-    gg.innerHTML = Object.entries(chartData.global)
-      .map(([k,v]) => renderCard('global', k, v)).join('');
+  if (song.global && Object.keys(song.global).length > 0) {
+    gg.innerHTML = Object.entries(song.global).map(([k,v]) => renderCard('global', k, v)).join('');
   } else {
     gg.innerHTML = '<div class="loading">아직 수집된 글로벌 차트 데이터가 없습니다.</div>';
   }
@@ -317,10 +329,10 @@ const PLATFORM_LINKS = {
 
 // ── 모달 ──
 function openModal(section, key) {
-  if (!chartData) return;
-  const p = chartData[section]?.[key];
+  const song = getSelectedSong();
+  if (!song) return;
+  const p = song[section]?.[key];
   if (!p) return;
-  
   const meta = p.chartMeta || {};
   const link = PLATFORM_LINKS[key] || {};
   const rows = Object.entries(p.charts).map(([name, d]) => `
@@ -336,7 +348,6 @@ function openModal(section, key) {
         ${changeHtml(d.change)}
       </div>
     </div>`).join('');
-
   const linkBtn = link.url ? `
     <div style="display:flex;gap:10px;margin-top:18px">
       <a href="${link.url}" target="_blank" rel="noopener" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);border-radius:12px;color:var(--purple-300);text-decoration:none;font-size:14px;font-weight:600;transition:all 0.2s" onmouseover="this.style.background='rgba(139,92,246,0.2)'" onmouseout="this.style.background='rgba(139,92,246,0.12)'">
@@ -347,7 +358,6 @@ function openModal(section, key) {
         앱 열기
       </a>
     </div>` : '';
-
   document.getElementById('modal-content').innerHTML = `
     <div class="modal-header">
       <div class="platform-dot ${p.bgClass}">${p.letter}</div>
@@ -357,7 +367,7 @@ function openModal(section, key) {
     <div class="modal-chart-list">${rows}</div>
     ${linkBtn}
     <div class="modal-note">
-      BTS "${chartData.song}" 기준 · 마지막 업데이트: ${chartData.lastUpdated} KST
+      BTS "${song.title}" 기준 · 마지막 업데이트: ${chartData.lastUpdated} KST
     </div>`;
   document.getElementById('modal-overlay').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -377,10 +387,8 @@ function updateClock() {
   document.getElementById('next-update').textContent = `(다음 갱신 ${60-kst.getMinutes()}분 후)`;
 }
 
-// ── 자동 새로고침 (5분마다 데이터 리로드) ──
 setInterval(loadChartData, 5 * 60 * 1000);
 
-// ── 별 ──
 const starsEl = document.getElementById('stars');
 for (let i=0;i<50;i++){
   const s=document.createElement('div');s.className='star';
@@ -391,7 +399,6 @@ for (let i=0;i<50;i++){
   starsEl.appendChild(s);
 }
 
-// ── 초기화 ──
 loadChartData();
 updateClock();
 setInterval(updateClock, 1000);
