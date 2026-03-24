@@ -7,6 +7,13 @@
 <meta name="description" content="BTS 방탄소년단 Swim 실시간 음원 차트 순위를 한눈에 확인하세요. 아미차트 ARMY CHART">
 <meta property="og:title" content="아미차트 ARMY CHART | BTS Swim 실시간 순위">
 <meta property="og:description" content="멜론, 지니, 벅스, 애플뮤직 등 실시간 순위 확인 · 1시간마다 자동 업데이트">
+<meta property="og:image" content="https://armychart.com/og-image.png">
+<meta property="og:url" content="https://armychart.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="아미차트 ARMY CHART | BTS 실시간 차트">
+<meta name="twitter:description" content="멜론, 지니, 벅스, 애플뮤직 등 실시간 순위 한눈에 확인">
+<meta name="twitter:image" content="https://armychart.com/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -151,6 +158,10 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg-deep);color:var(-
         </div>
       </div>
     </div>
+    <button id="share-btn" onclick="copyLink()" style="display:flex;align-items:center;gap:8px;padding:10px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;color:var(--purple-400);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'Noto Sans KR',sans-serif" onmouseover="this.style.borderColor='rgba(139,92,246,0.3)';this.style.background='rgba(139,92,246,0.08)'" onmouseout="this.style.borderColor='var(--border)';this.style.background='var(--bg-card)'">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      공유하기
+    </button>
   </div>
 
   <div id="song-tabs" style="display:flex;gap:10px;margin-bottom:10px">
@@ -397,6 +408,21 @@ for (let i=0;i<50;i++){
   s.style.setProperty('--dl',(Math.random()*3)+'s');
   s.style.width=s.style.height=(1+Math.random()*1.5)+'px';
   starsEl.appendChild(s);
+}
+
+// ── 링크 복사 ──
+function copyLink() {
+  const btn = document.getElementById('share-btn');
+  navigator.clipboard.writeText('https://armychart.com').then(() => {
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> 복사 완료!`;
+    btn.style.borderColor = 'rgba(74,222,128,0.3)';
+    btn.style.color = '#4ade80';
+    setTimeout(() => {
+      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> 공유하기`;
+      btn.style.borderColor = 'var(--border)';
+      btn.style.color = 'var(--purple-400)';
+    }, 2000);
+  });
 }
 
 loadChartData();
