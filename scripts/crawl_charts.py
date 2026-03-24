@@ -152,8 +152,13 @@ def crawl_apple(chart_type="Korea Top 100"):
         resp = requests.get(url, headers=HEADERS, timeout=15)
         resp.raise_for_status()
         results = resp.json().get("feed", {}).get("results", [])
-        return [{"rank": i, "title": item.get("name", ""), "artist": item.get("artistName", "")}
+        rows = [{"rank": i, "title": item.get("name", ""), "artist": item.get("artistName", "")}
                 for i, item in enumerate(results, 1)]
+        # 디버깅: BTS 관련 곡 모두 출력
+        for r in rows:
+            if any(kw.lower() in r["artist"].lower() for kw in ARTIST_KEYWORDS):
+                log(f"    발견: #{r['rank']} {r['title']} - {r['artist']}")
+        return rows
     except Exception as e:
         errors.append(f"Apple Music {chart_type} 크롤링 실패: {e}")
         log(f"  ❌ Apple Music {chart_type} 실패: {e}")
