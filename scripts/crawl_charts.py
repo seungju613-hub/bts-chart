@@ -117,11 +117,11 @@ def crawl_melon_chart(chart_type="TOP100"):
 #  지니 크롤링
 # ══════════════════════════════════════════════
 
-def crawl_bugs_chart(chart_type="실시간"):
-    """벅스 차트 크롤링 (bugs-chart.py 라이브러리 활용)"""
+def crawl_genie_chart(chart_type="TOP200"):
+    """지니 차트 크롤링 (genie-chart.py 라이브러리 활용)"""
     try:
-        from bugs import ChartData as BugsChartData
-        chart = BugsChartData()
+        from genie import ChartData as GenieChartData
+        chart = GenieChartData()
         rows = []
         for entry in chart:
             rows.append({
@@ -131,14 +131,15 @@ def crawl_bugs_chart(chart_type="실시간"):
             })
         
         rank = find_rank(rows, TRACK_TITLE, TRACK_ARTIST_KEYWORDS)
-        log(f"  벅스 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
+        log(f"  지니 {chart_type}: {'#' + str(rank) if rank else '차트 밖'}")
         return rank
         
     except Exception as e:
-        err_msg = f"벅스 {chart_type} 크롤링 실패: {str(e)}"
+        err_msg = f"지니 {chart_type} 크롤링 실패: {str(e)}"
         log(f"  ❌ {err_msg}")
         errors.append(err_msg)
         return None
+
 
 # ══════════════════════════════════════════════
 #  벅스 크롤링
