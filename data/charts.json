@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-25 13:59",
+  "lastUpdated": "2026-03-25 14:17",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -22,7 +22,7 @@
             },
             "일간": {
               "rank": 2,
-              "change": -1
+              "change": 0
             },
             "주간": {
               "rank": 16,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 1,
-              "change": 0
+              "rank": 2,
+              "change": -1
             },
             "일간": {
-              "rank": 1,
-              "change": 0
+              "rank": 2,
+              "change": -1
             }
           },
           "chartMeta": {
@@ -64,11 +64,11 @@
           "charts": {
             "실시간": {
               "rank": 1,
-              "change": 3
+              "change": 0
             },
             "일간": {
               "rank": 4,
-              "change": -3
+              "change": 0
             }
           },
           "chartMeta": {
@@ -116,11 +116,11 @@
           "charts": {
             "Korea Top 100": {
               "rank": 4,
-              "change": "NEW"
+              "change": 0
             },
             "US Top 100": {
               "rank": 14,
-              "change": -2
+              "change": 0
             }
           },
           "chartMeta": {
@@ -182,7 +182,7 @@
             },
             "일간": {
               "rank": 6,
-              "change": -1
+              "change": 0
             },
             "주간": {
               "rank": 34,
@@ -203,12 +203,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 7,
-              "change": -2
+              "rank": 8,
+              "change": -1
             },
             "일간": {
-              "rank": 7,
-              "change": -2
+              "rank": 8,
+              "change": -1
             }
           },
           "chartMeta": {
@@ -280,7 +280,7 @@
             },
             "US Top 100": {
               "rank": 43,
-              "change": "NEW"
+              "change": 0
             }
           },
           "chartMeta": {
