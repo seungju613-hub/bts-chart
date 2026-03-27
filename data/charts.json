@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-27 23:33",
+  "lastUpdated": "2026-03-28 02:39",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,8 +13,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 1,
-              "change": 0
+              "rank": 3,
+              "change": -2
             },
             "HOT100": {
               "rank": 1,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 3,
-              "change": 0
+              "rank": 16,
+              "change": -13
             },
             "일간": {
-              "rank": 3,
-              "change": 0
+              "rank": 16,
+              "change": -13
             }
           },
           "chartMeta": {
@@ -84,7 +84,7 @@
           "charts": {
             "실시간": {
               "rank": 3,
-              "change": -1
+              "change": 0
             }
           },
           "chartMeta": {
@@ -116,10 +116,10 @@
           "charts": {
             "Korea Top 100": {
               "rank": 6,
-              "change": "NEW"
+              "change": 0
             },
             "US Top 100": {
-              "rank": 18,
+              "rank": 19,
               "change": -1
             }
           },
@@ -173,8 +173,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 2,
-              "change": 3
+              "rank": 8,
+              "change": -6
             },
             "HOT100": {
               "rank": 2,
@@ -203,12 +203,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 10,
-              "change": 0
+              "rank": 22,
+              "change": -12
             },
             "일간": {
-              "rank": 10,
-              "change": 0
+              "rank": 22,
+              "change": -12
             }
           },
           "chartMeta": {
@@ -275,12 +275,12 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 11,
-              "change": "NEW"
+              "rank": 12,
+              "change": -1
             },
             "US Top 100": {
-              "rank": 69,
-              "change": 2
+              "rank": 75,
+              "change": -6
             }
           },
           "chartMeta": {
