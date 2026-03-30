@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-30 08:04",
+  "lastUpdated": "2026-03-30 15:20",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -14,7 +14,7 @@
           "charts": {
             "TOP100": {
               "rank": 1,
-              "change": 3
+              "change": 0
             },
             "HOT100": {
               "rank": 1,
@@ -25,8 +25,8 @@
               "change": 0
             },
             "주간": {
-              "rank": 16,
-              "change": 0
+              "rank": 3,
+              "change": 13
             }
           },
           "chartMeta": {
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 3,
-              "change": 13
+              "rank": 2,
+              "change": 1
             },
             "일간": {
-              "rank": 3,
-              "change": 13
+              "rank": 2,
+              "change": 1
             }
           },
           "chartMeta": {
@@ -63,12 +63,12 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": "-",
-              "change": "-"
+              "rank": 4,
+              "change": "NEW"
             },
             "일간": {
-              "rank": "-",
-              "change": "-"
+              "rank": 5,
+              "change": "NEW"
             }
           },
           "chartMeta": {
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 3,
-              "change": 2
+              "rank": 2,
+              "change": 1
             }
           },
           "chartMeta": {
@@ -119,8 +119,8 @@
               "change": 0
             },
             "US Top 100": {
-              "rank": "-",
-              "change": "-"
+              "rank": 41,
+              "change": "NEW"
             }
           },
           "chartMeta": {
@@ -173,8 +173,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 5,
-              "change": 3
+              "rank": 3,
+              "change": 2
             },
             "HOT100": {
               "rank": 2,
@@ -185,8 +185,8 @@
               "change": 0
             },
             "주간": {
-              "rank": 34,
-              "change": 0
+              "rank": 8,
+              "change": 26
             }
           },
           "chartMeta": {
@@ -203,12 +203,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 10,
-              "change": 11
+              "rank": 15,
+              "change": -5
             },
             "일간": {
-              "rank": 10,
-              "change": 11
+              "rank": 15,
+              "change": -5
             }
           },
           "chartMeta": {
@@ -223,12 +223,12 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": "-",
-              "change": "-"
+              "rank": 9,
+              "change": "NEW"
             },
             "일간": {
-              "rank": "-",
-              "change": "-"
+              "rank": 10,
+              "change": "NEW"
             }
           },
           "chartMeta": {
@@ -243,8 +243,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 23,
-              "change": 0
+              "rank": 9,
+              "change": 14
             }
           },
           "chartMeta": {
@@ -259,7 +259,7 @@
           "charts": {
             "TOP100": {
               "rank": 6,
-              "change": -2
+              "change": 0
             }
           },
           "chartMeta": {
@@ -275,8 +275,8 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 19,
-              "change": 0
+              "rank": 18,
+              "change": 1
             },
             "US Top 100": {
               "rank": "-",
