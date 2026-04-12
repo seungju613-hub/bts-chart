@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-12 08:05",
+  "lastUpdated": "2026-04-12 15:11",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,12 +13,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 2,
-              "change": 5
+              "rank": 3,
+              "change": -1
             },
             "HOT100": {
-              "rank": 1,
-              "change": 0
+              "rank": 3,
+              "change": -2
             },
             "일간": {
               "rank": 7,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 22,
-              "change": 1
+              "rank": 12,
+              "change": 10
             },
             "일간": {
-              "rank": 22,
-              "change": 1
+              "rank": 12,
+              "change": 10
             }
           },
           "chartMeta": {
@@ -63,12 +63,12 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 11,
-              "change": -1
+              "rank": 10,
+              "change": 1
             },
             "일간": {
-              "rank": 11,
-              "change": 0
+              "rank": 10,
+              "change": 1
             }
           },
           "chartMeta": {
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 25,
-              "change": -14
+              "rank": 9,
+              "change": 16
             }
           },
           "chartMeta": {
@@ -99,7 +99,7 @@
           "charts": {
             "TOP100": {
               "rank": 10,
-              "change": -1
+              "change": 0
             }
           },
           "chartMeta": {
@@ -115,8 +115,8 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 18,
-              "change": "NEW"
+              "rank": 16,
+              "change": 2
             },
             "US Top 100": {
               "rank": "-",
@@ -173,12 +173,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 4,
-              "change": 8
+              "rank": 8,
+              "change": -4
             },
             "HOT100": {
-              "rank": 2,
-              "change": 0
+              "rank": 6,
+              "change": -4
             },
             "일간": {
               "rank": 12,
@@ -204,11 +204,11 @@
           "charts": {
             "TOP200": {
               "rank": 30,
-              "change": 4
+              "change": 0
             },
             "일간": {
               "rank": 30,
-              "change": 4
+              "change": 0
             }
           },
           "chartMeta": {
@@ -223,12 +223,12 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 33,
-              "change": -12
+              "rank": 22,
+              "change": 11
             },
             "일간": {
-              "rank": 21,
-              "change": 0
+              "rank": 19,
+              "change": 2
             }
           },
           "chartMeta": {
@@ -243,8 +243,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 38,
-              "change": -7
+              "rank": 33,
+              "change": 5
             }
           },
           "chartMeta": {
@@ -259,7 +259,7 @@
           "charts": {
             "TOP100": {
               "rank": 13,
-              "change": -1
+              "change": 0
             }
           },
           "chartMeta": {
@@ -275,8 +275,8 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": "-",
-              "change": "-"
+              "rank": 67,
+              "change": "NEW"
             },
             "US Top 100": {
               "rank": "-",
