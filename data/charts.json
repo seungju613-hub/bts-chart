@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-26 15:55",
+  "lastUpdated": "2026-04-26 17:12",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -18,7 +18,7 @@
             },
             "HOT100": {
               "rank": 4,
-              "change": 1
+              "change": 0
             },
             "일간": {
               "rank": 11,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 20,
-              "change": -1
+              "rank": 22,
+              "change": -2
             },
             "일간": {
-              "rank": 20,
-              "change": -1
+              "rank": 22,
+              "change": -2
             }
           },
           "chartMeta": {
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 19,
-              "change": -3
+              "rank": 15,
+              "change": 4
             },
             "일간": {
               "rank": 22,
@@ -115,8 +115,8 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 42,
-              "change": 0
+              "rank": 37,
+              "change": 5
             },
             "US Top 100": {
               "rank": "-",
@@ -174,7 +174,7 @@
           "charts": {
             "TOP100": {
               "rank": 16,
-              "change": -3
+              "change": 0
             },
             "HOT100": {
               "rank": 8,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 63,
-              "change": -15
+              "rank": 33,
+              "change": 30
             },
             "일간": {
               "rank": 47,
@@ -243,8 +243,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 66,
-              "change": 1
+              "rank": 68,
+              "change": -2
             }
           },
           "chartMeta": {
