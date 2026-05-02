@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-02 19:42",
+  "lastUpdated": "2026-05-02 20:37",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,11 +13,11 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 10,
-              "change": 0
+              "rank": 9,
+              "change": 1
             },
             "HOT100": {
-              "rank": 5,
+              "rank": 4,
               "change": 1
             },
             "일간": {
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 24,
-              "change": -2
+              "rank": 25,
+              "change": -1
             },
             "일간": {
-              "rank": 24,
-              "change": -2
+              "rank": 25,
+              "change": -1
             }
           },
           "chartMeta": {
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 33,
-              "change": -13
+              "rank": 28,
+              "change": 5
             },
             "일간": {
               "rank": 25,
@@ -173,12 +173,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 17,
-              "change": 0
+              "rank": 16,
+              "change": 1
             },
             "HOT100": {
-              "rank": 8,
-              "change": 0
+              "rank": 9,
+              "change": -1
             },
             "일간": {
               "rank": 24,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 49,
-              "change": 19
+              "rank": 77,
+              "change": -28
             },
             "일간": {
               "rank": 62,
@@ -243,8 +243,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 77,
-              "change": -1
+              "rank": 75,
+              "change": 2
             }
           },
           "chartMeta": {
