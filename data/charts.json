@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-08 18:05",
+  "lastUpdated": "2026-05-08 20:03",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -14,11 +14,11 @@
           "charts": {
             "TOP100": {
               "rank": 12,
-              "change": -1
+              "change": 0
             },
             "HOT100": {
               "rank": 7,
-              "change": -2
+              "change": 0
             },
             "일간": {
               "rank": 15,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 27,
-              "change": -2
+              "rank": 26,
+              "change": 1
             },
             "일간": {
-              "rank": 27,
-              "change": -2
+              "rank": 26,
+              "change": 1
             }
           },
           "chartMeta": {
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 20,
-              "change": 2
+              "rank": 29,
+              "change": -9
             },
             "일간": {
               "rank": 26,
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 44,
-              "change": -1
+              "rank": 33,
+              "change": 11
             }
           },
           "chartMeta": {
@@ -115,8 +115,8 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 57,
-              "change": 0
+              "rank": 56,
+              "change": 1
             },
             "US Top 100": {
               "rank": "-",
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 66,
-              "change": -18
+              "rank": 38,
+              "change": 28
             },
             "일간": {
               "rank": 57,
@@ -243,8 +243,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 82,
-              "change": -4
+              "rank": 76,
+              "change": 6
             }
           },
           "chartMeta": {
