@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-16 02:23",
+  "lastUpdated": "2026-05-16 04:18",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -14,11 +14,11 @@
           "charts": {
             "TOP100": {
               "rank": 17,
-              "change": -9
+              "change": 0
             },
             "HOT100": {
               "rank": 2,
-              "change": 2
+              "change": 0
             },
             "일간": {
               "rank": 17,
@@ -64,7 +64,7 @@
           "charts": {
             "실시간": {
               "rank": 63,
-              "change": -1
+              "change": 0
             },
             "일간": {
               "rank": 34,
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 52,
-              "change": 1
+              "rank": 59,
+              "change": -7
             }
           },
           "chartMeta": {
@@ -115,8 +115,8 @@
           "representative": "Korea Top 100",
           "charts": {
             "Korea Top 100": {
-              "rank": 70,
-              "change": 0
+              "rank": 74,
+              "change": -4
             },
             "US Top 100": {
               "rank": "-",
@@ -174,11 +174,11 @@
           "charts": {
             "TOP100": {
               "rank": 30,
-              "change": -15
+              "change": 0
             },
             "HOT100": {
               "rank": 4,
-              "change": 4
+              "change": 0
             },
             "일간": {
               "rank": 30,
@@ -224,7 +224,7 @@
           "charts": {
             "실시간": {
               "rank": 86,
-              "change": 3
+              "change": 0
             },
             "일간": {
               "rank": 74,
@@ -243,8 +243,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 93,
-              "change": 0
+              "rank": 91,
+              "change": 2
             }
           },
           "chartMeta": {
