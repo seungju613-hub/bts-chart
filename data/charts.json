@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-16 18:22",
+  "lastUpdated": "2026-05-16 19:55",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -14,7 +14,7 @@
           "charts": {
             "TOP100": {
               "rank": 14,
-              "change": -1
+              "change": 0
             },
             "HOT100": {
               "rank": 8,
@@ -43,11 +43,11 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 30,
+              "rank": 29,
               "change": 1
             },
             "일간": {
-              "rank": 30,
+              "rank": 29,
               "change": 1
             }
           },
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 36,
-              "change": -7
+              "rank": 22,
+              "change": 14
             },
             "일간": {
               "rank": 34,
@@ -173,8 +173,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 23,
-              "change": -2
+              "rank": 21,
+              "change": 2
             },
             "HOT100": {
               "rank": 10,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 81,
-              "change": -37
+              "rank": 65,
+              "change": 16
             },
             "일간": {
               "rank": 69,
@@ -244,7 +244,7 @@
           "charts": {
             "실시간": {
               "rank": 95,
-              "change": -1
+              "change": 0
             }
           },
           "chartMeta": {
