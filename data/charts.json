@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-05-18 19:58",
+  "lastUpdated": "2026-05-18 23:29",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,12 +13,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 14,
-              "change": -3
+              "rank": 11,
+              "change": 3
             },
             "HOT100": {
-              "rank": 9,
-              "change": -2
+              "rank": 5,
+              "change": 4
             },
             "일간": {
               "rank": 19,
@@ -43,12 +43,12 @@
           "representative": "TOP200",
           "charts": {
             "TOP200": {
-              "rank": 32,
-              "change": -3
+              "rank": 47,
+              "change": -15
             },
             "일간": {
-              "rank": 32,
-              "change": -3
+              "rank": 47,
+              "change": -15
             }
           },
           "chartMeta": {
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 34,
-              "change": -6
+              "rank": 61,
+              "change": -27
             },
             "일간": {
               "rank": 42,
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 55,
-              "change": 4
+              "rank": 57,
+              "change": -2
             }
           },
           "chartMeta": {
@@ -116,7 +116,7 @@
           "charts": {
             "Korea Top 100": {
               "rank": 75,
-              "change": 1
+              "change": 0
             },
             "US Top 100": {
               "rank": "-",
@@ -173,12 +173,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 21,
-              "change": -1
+              "rank": 18,
+              "change": 3
             },
             "HOT100": {
-              "rank": 10,
-              "change": 0
+              "rank": 9,
+              "change": 1
             },
             "일간": {
               "rank": 31,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 58,
-              "change": 7
+              "rank": 99,
+              "change": -41
             },
             "일간": {
               "rank": 79,
@@ -244,7 +244,7 @@
           "charts": {
             "실시간": {
               "rank": 97,
-              "change": -3
+              "change": 0
             }
           },
           "chartMeta": {
