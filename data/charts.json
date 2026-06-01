@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-01 08:57",
+  "lastUpdated": "2026-06-01 12:40",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,16 +13,16 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 19,
-              "change": 4
+              "rank": 16,
+              "change": 3
             },
             "HOT100": {
-              "rank": 10,
-              "change": -1
+              "rank": 8,
+              "change": 2
             },
             "일간": {
-              "rank": 22,
-              "change": 0
+              "rank": 23,
+              "change": -1
             },
             "주간": {
               "rank": 20,
@@ -63,12 +63,12 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 85,
-              "change": 14
+              "rank": 67,
+              "change": 18
             },
             "일간": {
-              "rank": 45,
-              "change": 0
+              "rank": 60,
+              "change": -15
             }
           },
           "chartMeta": {
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 78,
-              "change": 1
+              "rank": 75,
+              "change": 3
             }
           },
           "chartMeta": {
@@ -173,16 +173,16 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 25,
-              "change": 14
+              "rank": 24,
+              "change": 1
             },
             "HOT100": {
               "rank": 11,
               "change": 0
             },
             "일간": {
-              "rank": 41,
-              "change": 0
+              "rank": 39,
+              "change": 2
             },
             "주간": {
               "rank": 35,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 94,
-              "change": -10
+              "rank": 88,
+              "change": 6
             },
             "일간": {
               "rank": 90,
