@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-06 03:54",
+  "lastUpdated": "2026-06-06 05:45",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -83,8 +83,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 81,
-              "change": 0
+              "rank": 80,
+              "change": 1
             }
           },
           "chartMeta": {
