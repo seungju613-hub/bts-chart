@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-09 07:18",
+  "lastUpdated": "2026-06-09 08:57",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,12 +13,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 25,
-              "change": 0
+              "rank": 21,
+              "change": 4
             },
             "HOT100": {
-              "rank": 10,
-              "change": 2
+              "rank": 11,
+              "change": -1
             },
             "일간": {
               "rank": 25,
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 85,
-              "change": -15
+              "rank": 83,
+              "change": 2
             },
             "일간": {
               "rank": 64,
@@ -84,7 +84,7 @@
           "charts": {
             "실시간": {
               "rank": 78,
-              "change": 3
+              "change": 0
             }
           },
           "chartMeta": {
@@ -99,7 +99,7 @@
           "charts": {
             "TOP100": {
               "rank": 51,
-              "change": -1
+              "change": 0
             }
           },
           "chartMeta": {
@@ -173,12 +173,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 47,
-              "change": 0
+              "rank": 28,
+              "change": 19
             },
             "HOT100": {
-              "rank": 12,
-              "change": 2
+              "rank": 16,
+              "change": -4
             },
             "일간": {
               "rank": 44,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 99,
-              "change": -5
+              "rank": "-",
+              "change": "-"
             },
             "일간": {
               "rank": 91,
@@ -259,7 +259,7 @@
           "charts": {
             "TOP100": {
               "rank": 68,
-              "change": 4
+              "change": 0
             }
           },
           "chartMeta": {
