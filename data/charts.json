@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-14 07:54",
+  "lastUpdated": "2026-06-14 08:58",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,12 +13,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 25,
-              "change": 0
+              "rank": 14,
+              "change": 11
             },
             "HOT100": {
-              "rank": 13,
-              "change": 0
+              "rank": 8,
+              "change": 5
             },
             "일간": {
               "rank": 24,
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 57,
-              "change": 3
+              "rank": 66,
+              "change": -9
             },
             "일간": {
               "rank": 46,
@@ -83,7 +83,7 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 83,
+              "rank": 81,
               "change": 2
             }
           },
@@ -99,7 +99,7 @@
           "charts": {
             "TOP100": {
               "rank": 49,
-              "change": -1
+              "change": 0
             }
           },
           "chartMeta": {
@@ -173,11 +173,11 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 43,
-              "change": 0
+              "rank": 23,
+              "change": 20
             },
             "HOT100": {
-              "rank": 16,
+              "rank": 15,
               "change": 1
             },
             "일간": {
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 84,
-              "change": 2
+              "rank": 71,
+              "change": 13
             },
             "일간": {
               "rank": 81,
@@ -259,7 +259,7 @@
           "charts": {
             "TOP100": {
               "rank": 71,
-              "change": -2
+              "change": 0
             }
           },
           "chartMeta": {
