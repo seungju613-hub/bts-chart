@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-25 07:07",
+  "lastUpdated": "2026-06-25 08:59",
   "artist": "BTS (방탄소년단)",
   "songs": [
     {
@@ -13,12 +13,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 28,
-              "change": 0
+              "rank": 20,
+              "change": 8
             },
             "HOT100": {
-              "rank": 8,
-              "change": -3
+              "rank": 9,
+              "change": -1
             },
             "일간": {
               "rank": 27,
@@ -63,8 +63,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": 69,
-              "change": 0
+              "rank": 72,
+              "change": -3
             },
             "일간": {
               "rank": 68,
@@ -84,7 +84,7 @@
           "charts": {
             "실시간": {
               "rank": 93,
-              "change": 2
+              "change": 0
             }
           },
           "chartMeta": {
@@ -98,8 +98,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 53,
-              "change": 8
+              "rank": 63,
+              "change": -10
             }
           },
           "chartMeta": {
@@ -173,12 +173,12 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 55,
-              "change": -1
+              "rank": 34,
+              "change": 21
             },
             "HOT100": {
-              "rank": 12,
-              "change": 5
+              "rank": 13,
+              "change": -1
             },
             "일간": {
               "rank": 53,
@@ -223,8 +223,8 @@
           "representative": "실시간",
           "charts": {
             "실시간": {
-              "rank": "-",
-              "change": "-"
+              "rank": 98,
+              "change": "NEW"
             },
             "일간": {
               "rank": 98,
@@ -258,8 +258,8 @@
           "representative": "TOP100",
           "charts": {
             "TOP100": {
-              "rank": 80,
-              "change": 3
+              "rank": 92,
+              "change": -12
             }
           },
           "chartMeta": {
